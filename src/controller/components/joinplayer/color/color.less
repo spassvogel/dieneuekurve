@@ -1,0 +1,25 @@
+.color-picker {
+
+	display: flex;
+
+	.swatch {
+		flex: 1;
+		border-radius: 10px;	// fallback non supportive browsers
+		border-radius: 10%;
+
+		cursor: pointer;
+		position: relative;
+	}
+	.swatch + .swatch {
+		margin-left: 6px;
+	}
+
+	.swatch svg {
+		fill: #fff;
+		visibility: hidden;
+	}
+
+	.swatch svg.selected {
+		visibility: visible;
+	}
+}
