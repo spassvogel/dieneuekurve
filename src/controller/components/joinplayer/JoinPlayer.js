@@ -1,40 +1,65 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { createPlayer } from './../../../shared/actions';
 import ColorPicker from './color/ColorPicker';
 import {} from './joinplayer.less';
+import uuid from 'uuid';
 
-export default class JoinPlayer extends Component {
+class JoinPlayer extends Component {
 	constructor(props) {
     	super(props);
 
 		this.state = {
-			inputColor: '',         // color chosen
+			name: '',
+			color: '',         // color chosen
 		}
-	  }
-	  
-	
+	}	
 	
 	render() {
-		return <div className='join-player'>
+		return <form className='join-player' onSubmit= { this.handleSubmit.bind(this) } >
 			<div>
 				<label>name</label>
-				<input type='text' id='name'/>
+				<input type='text' id='name' onChange= {this.handleNameChange.bind(this) } />
 			</div>
 			<div> 
 				<label>color</label>
 				<ColorPicker className='input'
-					selectedColor = { this.state.inputColor }
+					selectedColor = { this.state.color }
 					onChange = { this.handleColorChange.bind(this) }
 				/>
 			</div>			
 			<div>
-				<button>Join</button>
+				<input type = 'submit' value='Join'/>
 			</div>
-		</div>;
+		</form>;
 	}
 	
+	handleNameChange(event) {
+		this.setState({ 
+			name: event.target.value
+		});
+	}
+
 	handleColorChange(value) {
         this.setState({
-            inputColor: value
+            color: value
         });
-    }
+	}
+	
+	handleSubmit(event) {
+		const { name, color } = this.state;
+		const id = uuid.v4();
+		this.props.dispatch(createPlayer(id, name, color));
+
+		event.preventDefault();
+	}
 }
+const mapDispatchToProps = dispatch => {
+	return { }
+}
+const mapStateToProps = state => {
+	return { }
+}
+
+export default connect(
+)(JoinPlayer);
