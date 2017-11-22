@@ -1,10 +1,10 @@
 import {
-	CREATE_PLAYER 
+	REQUEST_PLAYER_CREATE 
 } from './../actions'
 
 export default function currentPlayer(state = null, action) {
 	switch(action.type){
-		case CREATE_PLAYER:
+		case REQUEST_PLAYER_CREATE:
 			return action.id;
 			break;
 		default:

@@ -4,11 +4,11 @@ import currentPlayer from './currentPlayer'
 
 // Root reducer
 
-const main = combineReducers({
+const root = combineReducers({
 	players,
 	currentPlayer
 });
-export default main;
+export default root;
 
 // export default function main(state = initialState, action) {
 // 	switch(action.type){

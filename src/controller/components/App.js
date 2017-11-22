@@ -6,7 +6,6 @@ import {} from './app.less';
 
 class App extends Component {
 	render() {
-		console.log(this.props)
 		if(this.props.currentPlayer === null) {
 			return  <JoinPlayer/>;
 		}

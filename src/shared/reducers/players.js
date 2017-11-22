@@ -1,21 +1,15 @@
 import {
-	CREATE_PLAYER 
+	CREATE_PLAYER,
+	ADD_PLAYERS
 } from './../actions'
 
 import uuid from 'uuid';
 
-const initialState = [{
-	id: uuid.v4(),
-	name: "john",
-	color: '#008b02'
-}, { 
-	id: uuid.v4(),
-	name: "carl",
-	color: '#006b76'
-}]		
-
-export default function players(state = initialState, action) {
+export default function players(state = [], action) {
 	switch(action.type){
+		case ADD_PLAYERS: 
+			return [ ...state, ...action.players];
+			break;
 		case CREATE_PLAYER:
 			const { id, name, color } = action;
 			return [ ...state, {
