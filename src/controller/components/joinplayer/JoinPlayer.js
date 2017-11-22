@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { requestPlayerCreate } from './../../../shared/actions';
-import ColorPicker from './color/ColorPicker';
-import {} from './joinplayer.less';
 import uuid from 'uuid';
+import ColorPicker from './color/ColorPicker';
+import { requestPlayerCreate } from './../../../shared/actions';
+import {} from './joinplayer.less';
 
 class JoinPlayer extends Component {
 	constructor(props) {
@@ -51,7 +51,8 @@ class JoinPlayer extends Component {
 		
 		const { name, color } = this.state;
 		const id = uuid.v4();
-		this.props.dispatch(requestPlayerCreate(id, name, color));
+		const action = requestPlayerCreate(id, name, color);
+		this.props.dispatch(action);
 
 	}
 }

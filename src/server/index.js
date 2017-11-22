@@ -10,35 +10,60 @@ const server = http.Server(app);
 const io = new SocketIO(server);
 const port = process.env.PORT || 3000;
 
-const players = [{
-	id: uuid.v4(),
-	name: "johnny",
-	color: '#008b02'
-}, { 
-	id: uuid.v4(),
-	name: "carl",
-	color: '#006b76'
-}]	
+const players = []	
 
 io.on('connection', function(socket){
-
 	console.log('a client connected from ' + socket.request.connection.remoteAddress);
+	let playerID = null;
+
+	socket.on('disconnect', () => {
+		console.log('disconnecting player ' + playerID)
+		const index = players.findIndex(p => p.id === playerID);		
+		if (index !== -1) {
+			players.splice(index, 1);
+		}
+		// Removes player from all other clients
+		io.emit('action', actions.removePlayer(playerID));
+	});
+
 	socket.on('action', (action) => {
 		switch(action.type) {
 
-			case actions.REQUEST_PLAYERS:			
+			case actions.REQUEST_PLAYERS:
+				// Responds with ADD_PLAYERS and passes all players currently joined
 				socket.emit('action', actions.addPlayers(players));
 				break;
 
-			case actions.REQUEST_PLAYER_CREATE:
+			case actions.REQUEST_PLAYER_CREATE: {
+				console.log('creating player ' + action.id)
+
+
+				// Adds the given player to the joined player list and emits 
+				// ADD_PLAYERS to all clients, passing the newly created player
+				playerID = action.id;
 				const player = { 
 					id: action.id, 
 					name: action.name, 
-					color: action.color
+					color: action.color,
+					ready: false
 				};
 				players.push(player);
-				socket.emit('action', actions.addPlayers([player]));
+
+				io.emit('action', actions.addPlayers([player]));
 				break;
+			}
+			
+			case actions.REQUEST_PLAYER_READY_STATE: {
+				// Sets ready state for given player. Emits
+				// SET_PL_PLAYER_READY_STATE				
+				const player = players.find(p => p.id === action.id);
+				if(player) {
+					player.ready = action.ready;
+				}
+
+				io.emit('action', actions.setPlayerReadyState(action.id, action.ready));
+				break;
+			}
 				
 		}
 	});

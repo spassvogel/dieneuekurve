@@ -16,8 +16,7 @@ class App extends Component {
 }
 const mapStateToProps = state => {
 	return {
-		currentPlayer: state.currentPlayer,
-		players: state.players		
+		currentPlayer: state.currentPlayer
 	}
 }
 

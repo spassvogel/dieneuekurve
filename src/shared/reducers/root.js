@@ -1,12 +1,13 @@
-import { combineReducers } from 'redux';
+import combineSectionReducers from 'combine-section-reducers';
 import players from './players'
 import currentPlayer from './currentPlayer'
+import ready from './ready'
 
 // Root reducer
-
-const root = combineReducers({
+const root = combineSectionReducers({
 	players,
-	currentPlayer
+	currentPlayer,
+	ready
 });
 export default root;
 

@@ -5,7 +5,8 @@ class PlayerList extends Component {
 	render() {
 		return <ul> { 
 			this.props.players.map(p => {
-				return <li key={p.id}>{ p.name }</li>
+				const name = `${p.name} ${ this.props.currentPlayer === p.id ? '(you)' : ''}`
+				return <li key={p.id} className= { p.ready ? 'ready': ''} >{ name }</li>
 			})
 		}
 		</ul>
