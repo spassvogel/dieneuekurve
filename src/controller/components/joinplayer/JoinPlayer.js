@@ -12,6 +12,7 @@ class JoinPlayer extends Component {
 		this.state = {
 			name: '',
 			color: '',         // color chosen
+			formValid: false
 		}
 	}	
 	
@@ -25,24 +26,27 @@ class JoinPlayer extends Component {
 				<label>color</label>
 				<ColorPicker className='input'
 					selectedColor = { this.state.color }
+					players = { this.props.players }
 					onChange = { this.handleColorChange.bind(this) }
 				/>
 			</div>			
 			<div>
-				<input type = 'submit' value='Join'/>
+				<input type = 'submit' value='Join' disabled= { !this.state.formValid } />
 			</div>
 		</form>;
 	}
 	
 	handleNameChange(event) {
 		this.setState({ 
-			name: event.target.value
+			name: event.target.value,
+			formValid: event.target.value && this.state.color
 		});
 	}
 
 	handleColorChange(value) {
         this.setState({
-            color: value
+			color: value,
+			formValid: !!this.state.name
         });
 	}
 	
@@ -53,15 +57,17 @@ class JoinPlayer extends Component {
 		const id = uuid.v4();
 		const action = requestPlayerCreate(id, name, color);
 		this.props.dispatch(action);
-
 	}
 }
 const mapDispatchToProps = dispatch => {
 	return { }
 }
 const mapStateToProps = state => {
-	return { }
+	return {
+		players: state.players
+	}
 }
 
 export default connect(
+	mapStateToProps
 )(JoinPlayer);

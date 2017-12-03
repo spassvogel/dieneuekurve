@@ -2,24 +2,27 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import JoinPlayer from './joinplayer/JoinPlayer';
 import Lobby from './lobby/Lobby';
+import GameController from './gamecontroller/GameController';
 import {} from './app.less';
 
 class App extends Component {
 	render() {
 		if(this.props.currentPlayer === null) {
 			return  <JoinPlayer/>;
+		} else if (!this.props.playing) {
+			return <Lobby/>			
+		} else {
+			return <GameController />
 		}
-		//return <div>Hello a@@@world from a React component</div>;
-		//return <JoinPlayer/>
-		return <Lobby/>
 	}
 }
 const mapStateToProps = state => {
 	return {
-		currentPlayer: state.currentPlayer
+		currentPlayer: state.currentPlayer,
+		playing: state.playing
 	}
 }
 
 export default connect(
-	mapStateToProps,
+	mapStateToProps
 )(App);

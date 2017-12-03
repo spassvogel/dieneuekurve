@@ -6,6 +6,9 @@ module.exports = {
 	entry: {
 		controller_bundle: [
 			"./src/controller/index.js"
+		],
+		game_bundle: [
+			"./src/game/index.js"
 		]
 	},
 	output: {

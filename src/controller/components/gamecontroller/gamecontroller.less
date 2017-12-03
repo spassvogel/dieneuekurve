@@ -1,0 +1,42 @@
+.game-controller {
+	
+	display: flex;
+
+	control-button {
+		flex: 1;
+		border: 2px solid green;
+		width: 50%;
+		padding-top: 50%;
+	}
+
+	control-button.pressed {
+		background-color: lightgray;
+	}
+
+	control-button.left {
+		margin-right: 10px;
+	}
+
+	control-button.left::before {
+		content: '<';
+		font-size: 50vw;
+		position: absolute;
+		top: 0;
+		font-family: monospace;
+		line-height: 50vw;
+		margin-top: -3%;
+		margin-left: 10%;
+	}
+
+	control-button.right::before {
+		content: '>';
+		font-size: 50vw;
+		position: absolute;
+		top: 0;
+		font-family: monospace;
+		line-height: 50vw;
+		margin-top: -3%;
+		margin-left: 10%;
+	}
+
+}

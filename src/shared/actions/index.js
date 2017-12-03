@@ -1,10 +1,12 @@
 // Action types
 export const ADD_PLAYERS = 'ADD_PLAYERS';
 export const REMOVE_PLAYER = 'REMOVE_PLAYER';
+export const REQUEST_CONTROL = 'REQUEST_CONTROL';
 export const REQUEST_PLAYERS = 'REQUEST_PLAYERS';
 export const REQUEST_PLAYER_CREATE = 'REQUEST_PLAYER_CREATE';
 export const REQUEST_PLAYER_READY_STATE = 'REQUEST_PLAYER_READY_STATE';
 export const SET_PLAYER_READY_STATE = 'SET_PLAYER_READY_STATE';
+export const SET_PLAYING = 'SET_PLAYING';
 
 
 // Action creators
@@ -29,6 +31,20 @@ export function removePlayer(id) {
 		id
 	}
 }
+
+/**
+ * This action sends a control action
+ * @param {string} control 'left' or 'right'
+ * @param {boolean} pressed indicates wether pressed or released
+ */
+export function requestControl(control, pressed = true) {
+	return { 
+		type: REQUEST_CONTROL,
+		control,
+		pressed
+	}
+}
+
 /**
  * This action requests the list of players from the server.
  * Will call back with ADD_PLAYERS
@@ -68,6 +84,7 @@ export function requestPlayerReadyState(id, ready) {
 		ready
 	}
 }
+
 /**
  * This action is called from the server to set the 'ready' flag
  * on a player. 
@@ -80,3 +97,15 @@ export function setPlayerReadyState(id, ready) {
 		ready
 	}
 }
+
+/**
+ * This action is called from the server to set the 'playing' flag
+ * @param {boolean} playing
+ */
+export function setPlaying(playing) {
+	return {
+		type: SET_PLAYING,
+		playing
+	}
+}
+

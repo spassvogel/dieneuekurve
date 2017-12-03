@@ -9,9 +9,18 @@
 
 		cursor: pointer;
 		position: relative;
+		box-sizing: content-box;
+		border-width: 2px;
+		border-style: solid;
 	}
+
 	.swatch + .swatch {
 		margin-left: 6px;
+	}
+
+	.swatch.disabled {
+		cursor: default;
+		pointer-events: none;
 	}
 
 	.swatch svg {

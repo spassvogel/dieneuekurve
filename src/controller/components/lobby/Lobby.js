@@ -11,6 +11,7 @@ class Lobby extends Component {
 	render() {
 
 		const readyText = `${this.props.ready ? '✔' : ' '} Ready`;
+
 		return <div className='lobby'>
 			<PlayerList { ... this.props }/>
 			<button onClick= { this.handleReadyClick.bind(this) } >
@@ -26,8 +27,6 @@ class Lobby extends Component {
 }
 
 const mapStateToProps = state => {
-
-	//const ready = state.players.find(p => p.id === state.currentPlayer).ready;
 	return { 
 		players: state.players,
 		ready: state.ready,
@@ -35,16 +34,8 @@ const mapStateToProps = state => {
 	}
 }
 
-const ready = state=> {
-	return 'bla';
-}
-
 const mapDispatchToProps = (dispatch, ownProps) => {
 	return {
-		onReadyClick: evt => {
-			console.log(ownProps.ready)
-		 	//dispatch(toggleTodo(id))
-		}
 	}
 }
 	

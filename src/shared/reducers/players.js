@@ -17,7 +17,7 @@ export default function players(state = [], action) {
 
 		case SET_PLAYER_READY_STATE:
 			// Return players array where the player whose ready state is 
-			// changed is new 
+			// changed is replaced 
 			return state.map( p => {
 				if(p.id !== action.id) {
 					return p;
