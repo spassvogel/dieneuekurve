@@ -121,7 +121,7 @@ export default class Game {
         
         switch(this._gameState){
             case GAME_STATES.playing:
-                const playerHitSomething = (dot) => {
+                const dotHitSomething = (dot) => {
                     return this.gameArea.hitTest(dot.pos.x, dot.pos.y) ||
                         dot.pos.x < 0 ||
                         dot.pos.y < 0 ||
@@ -130,8 +130,11 @@ export default class Game {
                 }
 
                 if (!event.paused) {
-
-                    this.dots.filter(dot => dot.alive).forEach((dot) => {
+					const activeDots = this.dots.filter(dot => dot.alive);
+					if(activeDots.length === 1){
+						
+					}
+					activeDots.forEach((dot) => {
                         // Randomly open the line
                         if(Math.random() * 100 < .5 && !dot.isOpen){
                             dot.open = true;
@@ -140,7 +143,7 @@ export default class Game {
                         // Determine new position
                         dot.update(event);
 
-                        if(playerHitSomething(dot)){
+                        if(dotHitSomething(dot)){
                             console.log(dot.name + " dies")
                             dot.alive = false;
                         }
@@ -177,8 +180,7 @@ export default class Game {
         this._gameState = val;
         switch(val){
 			case GAME_STATES.playing:
-				this.gameArea.graphics.clear();
-				this.drawGameAreaBorder();				
+				this.paintInitialPlayingScreen();				
                 break;
 
 			case GAME_STATES.waitingForRound:
@@ -205,8 +207,9 @@ export default class Game {
         this.hud.removeAllChildren();
 
         if(this.firstGame) {
-            const headerText = new createjs.Text('Starting game', "60px Arial", "#ffffff");                   
+            const headerText = new createjs.Text('Starting game', "50px Arial", "#ffffff");                   
             headerText.x = canvas.width / 2;
+			headerText.y = 15;
             headerText.textAlign = 'center';
             this.hud.addChild(headerText);
             
@@ -230,7 +233,7 @@ export default class Game {
         const playerTextY = 200;
         const playerTextHeight = 80;
         for(let i = 0; i < players.length; i++){
-            const text = new createjs.Text(`${players[i].ready ? '✓': '  '} ${players[i].name}`, "60px Arial", players[i].color);
+            const text = new createjs.Text(`${players[i].ready ? '✓': '  '} ${players[i].name}`, "50px Arial", players[i].color);
             text.x = playerTextX;
 			text.y = playerTextY + i * playerTextHeight;
             this.hud.addChild(text);
@@ -245,7 +248,7 @@ export default class Game {
 
         let counter = 3;
         const getHeaderText = () => `Round ${this._round}. Get ready: ${counter}`;
-        const headerText = new createjs.Text(getHeaderText(), "60px Arial", "#ffffff");
+        const headerText = new createjs.Text(getHeaderText(), "50px Arial", "#ffffff");
         const counterInterval = setInterval(() => {
             if(--counter === 0){
                 clearInterval(counterInterval);
@@ -256,11 +259,25 @@ export default class Game {
             }
         }, 1000);
 
-        headerText.x = canvas.width / 2;
-        headerText.textAlign = 'center';
+        headerText.x = 20;
+		headerText.y = 15;
         this.hud.addChild(headerText);        
     }
 	
+	/**
+	 * Gets called right before every round starts
+	 */
+	paintInitialPlayingScreen(){
+		this.hud.removeAllChildren();
+		const headerText = new createjs.Text(`Round ${this._round}.`, "50px Arial", "#ffffff");
+		headerText.x = 20;
+		headerText.y = 15;
+		this.hud.addChild(headerText);
+
+		this.gameArea.graphics.clear();
+		this.drawGameAreaBorder();	
+	}
+
 	/**
 	 * Creates dots based on players in the store
 	 */

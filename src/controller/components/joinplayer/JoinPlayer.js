@@ -29,7 +29,10 @@ class JoinPlayer extends Component {
 					players = { this.props.players }
 					onChange = { this.handleColorChange.bind(this) }
 				/>
-			</div>			
+			</div>
+			<div className='info'>
+				{ `${ this.props.players.length} player(s) in lobby`}
+			</div>
 			<div>
 				<input type = 'submit' value='Join' disabled= { !this.state.formValid } />
 			</div>
