@@ -38,4 +38,4 @@ ColorSwatch.defaultProps = {
 	disabled: false
 }
 
-export default ColorSwatch
+export default ColorSwatch;

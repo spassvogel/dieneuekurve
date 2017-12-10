@@ -1,47 +1,30 @@
-import React, { Component } from 'react';
+import React from 'react';
 import ColorSwatch from './ColorSwatch'
 import {} from './color.less';
 
 const CLASS_NAME = 'color-picker';
-class ColorPicker extends Component {
-	constructor(props) {
-    	super(props);
-
-		this.handleChange = this.handleChange.bind(this);
-		this.handleSwatchCreated = this.handleSwatchCreated.bind(this);
-  	}
-
-	render() {
-		const className = CLASS_NAME + (this.props.className ? ' ' + this.props.className : '');
-		return <div className={ className }> { 
-				this.props.colors.map(c => {
-					const player = this.getPlayerByColor(c);
-					return <ColorSwatch
-						color = { c }
-						selected = { this.props.selectedColor == c }
-						onClick = { this.handleChange }
-						key = { c} 
-						disabled = { player !== null }
-						title = { player !== null ? `${c} [${player.name}]` : c }
-					/>
-				})
-			}
-			</div>;
+const ColorPicker = (props) => {
+	const className = CLASS_NAME + (props.className ? ' ' + props.className : '');
+	const getPlayerByColor = (color) => {
+		return props.players.find(p => p.color === color) || null;
 	}
 
-	handleChange(color){
-		if(typeof this.props.onChange === 'function'){
-			this.props.onChange(color);			
+	return (
+		<div className={ className }> { 
+			props.colors.map(c => {
+				const player = getPlayerByColor(c);
+				return <ColorSwatch
+					color = { c }
+					selected = { props.selectedColor == c }
+					onClick = { props.onChange }
+					key = { c} 
+					disabled = { player !== null }
+					title = { player !== null ? `${c} [${player.name}]` : c }
+				/>
+			})
 		}
-	}
-
-	handleSwatchCreated(color){
-		this.props.onChange(color);		
-	}
-
-	getPlayerByColor(color) {
-		return this.props.players.find(p => p.color === color) || null;
-	}
+		</div>
+	);
 };
 
 ColorPicker.defaultProps = {
