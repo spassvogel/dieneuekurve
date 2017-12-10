@@ -12,14 +12,3 @@ const root = combineSectionReducers({
 	playing
 });
 export default root;
-
-// export default function main(state = initialState, action) {
-// 	switch(action.type){
-// 		case CREATE_PLAYER:
-// 			console.log(action);
-// 			return state;
-// 			break;
-// 		default:
-// 			return state;		
-// 	} 
-// }

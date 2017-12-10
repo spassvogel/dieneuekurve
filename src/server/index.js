@@ -4,6 +4,7 @@ import http from 'http';
 import SocketIO from 'socket.io';
 import uuid from 'uuid';
 import * as actions from './../shared/actions';
+import mobile from 'is-mobile';
 
 const app = express();
 const server = http.Server(app);
@@ -71,12 +72,21 @@ io.on('connection', function(socket){
 	});
  });
 
+
 app.use('/dist', express.static('./dist'));
 app.get('/controller?*', (request, response) => {
 	response.sendFile('controller.html', { root: './'});
 });
 app.get('/game*', (request, response) => {
 	response.sendFile('game.html', { root: './'});
+});
+app.use('/', (request, response) => {
+	if(mobile()){
+		response.sendFile('controller.html', { root: './'});
+	} 
+	else {
+		response.sendFile('game.html', { root: './'});		
+	}		
 });
 
 server.listen(port, () => console.log(`Server running on port: ${port}`));

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 const CLASS_NAME = 'swatch';
 const SELECTED_CLASS_NAME = 'selected';

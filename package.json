@@ -4,12 +4,9 @@
   "description": "Die Neue Kurve",
   "main": "index.js",
   "scripts": {
-    "start": "npm run webpack && npm run serve",
+    "start": "npm-run-all --parallel webpack serve",
     "webpack": "webpack --watch",
-    "serve": "nodemon src/server --exec babel-node",
-    "web": "babel-node src/server",
-    "dev": "webpack --watch && npm start",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "serve": "nodemon src/server --exec babel-node"
   },
   "author": "",
   "license": "ISC",
@@ -33,6 +30,8 @@
   "dependencies": {
     "combine-section-reducers": "^1.0.5",
     "express": "^4.16.2",
+    "is-mobile": "^0.2.2",
+    "npm-run-all": "^4.1.2",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
     "redux-socket.io": "^1.4.0",
