@@ -5,6 +5,7 @@ import SocketIO from 'socket.io';
 import uuid from 'uuid';
 import * as actions from './../shared/actions';
 import mobile from 'is-mobile';
+import ip from "ip";
 
 const app = express();
 const server = http.Server(app);
@@ -16,6 +17,10 @@ const players = []
 io.on('connection', function(socket){
 	console.log('a client connected from ' + socket.request.connection.remoteAddress);
 	let playerID = null;
+	
+	if(socket.handshake.query.client === 'game') {
+		io.emit('action', actions.setServerIP(`${ip.address()}:${port}`));
+	}
 
 	socket.on('disconnect', () => {
 		console.log('disconnecting player ' + playerID)

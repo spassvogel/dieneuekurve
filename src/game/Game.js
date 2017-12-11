@@ -1,14 +1,15 @@
 import Dot from './Dot';
 import * as actions from './../shared/actions';
 import {} from './game.less';
+import 'yuki-createjs';
+import { create } from 'domain';
 
 const NUM_PLAYERS_REQUIRED = 2; // Minimum number of players required to start game
-const CONTROLLER_PATH = "controller.html";
 const START_POS_MARGIN = 20;	// Player can never start in this area around the edges
 const GAME_AREA_MARGIN = {
     top: 80,
     right: 20,
-    bottom: 30,
+    bottom: 40,
     left: 20
 }
 const GAME_STATES = {
@@ -23,6 +24,7 @@ export default class Game {
 
     constructor(canvas, store){
         this._gameState = null;
+        this._serverAddress = ''; // Will be set after conntecting to server
         this._repaintWaitingForGame = false; // flag to repaint player list 
         this._round = 1;
         this._dots = [];
@@ -30,18 +32,18 @@ export default class Game {
         this._store = store;
         store.subscribe(this.storeChanged.bind(this));
 
-        this.addressBackend = window.location.host;
-        this.init(canvas);
+        this.canvas = canvas;
+        this.init();
     }
 
-    init(canvas){
-        this.stage = new createjs.Stage(canvas);
+    init(){
+        this.stage = new createjs.Stage(this.canvas);
         this.gameArea = new createjs.Shape();
         this.gameAreaDimensions = new createjs.Rectangle(
             GAME_AREA_MARGIN.left, 
             GAME_AREA_MARGIN.top, 
-            canvas.width - GAME_AREA_MARGIN.left - GAME_AREA_MARGIN.right, 
-            canvas.height - GAME_AREA_MARGIN.top - GAME_AREA_MARGIN.bottom);
+            this.canvas.width - GAME_AREA_MARGIN.left - GAME_AREA_MARGIN.right, 
+            this.canvas.height - GAME_AREA_MARGIN.top - GAME_AREA_MARGIN.bottom);
 
         this.gameArea.x = this.gameAreaDimensions.x;
         this.gameArea.y = this.gameAreaDimensions.y;
@@ -65,6 +67,10 @@ export default class Game {
                 if(this.players.length >= NUM_PLAYERS_REQUIRED && this.players.every(p => p.ready)){
                     // All players ready
                     this.gameState = GAME_STATES.waitingForRound;
+                }
+                console.log(this._store.getState().serverIP)
+                if(this._store.getState().serverIP) {
+                    this._serverAddress = this._store.getState().serverIP;
                 }
                 break;
         }
@@ -208,7 +214,7 @@ export default class Game {
 
         if(this.firstGame) {
             const headerText = new createjs.Text('Starting game', "50px Arial", "#ffffff");                   
-            headerText.x = canvas.width / 2;
+            headerText.x = this.canvas.width / 2;
 			headerText.y = 15;
             headerText.textAlign = 'center';
             this.hud.addChild(headerText);
@@ -223,12 +229,18 @@ export default class Game {
             }
             // waiting on more players
             const footerText = new createjs.Text(text, "30px Arial", "#ffffff");                   
-            footerText.x = canvas.width / 2;
-            footerText.y = canvas.height - 30;
+            footerText.x = this.canvas.width / 2;
+            footerText.y = this.canvas.height - 80;
             footerText.textAlign = 'center';
             this.hud.addChild(footerText);
         }
 
+        const joinGameText = new createjs.Text(`Point your mobile browser at: ${this._serverAddress}`, "30px Arial", "#ffffff");      
+        joinGameText.x = this.canvas.width / 2;
+        joinGameText.y = this.canvas.height - 35;
+        joinGameText.textAlign = 'center';
+        this.hud.addChild(joinGameText);
+        
         const playerTextX = 100;
         const playerTextY = 200;
         const playerTextHeight = 80;
@@ -261,7 +273,9 @@ export default class Game {
 
         headerText.x = 20;
 		headerText.y = 15;
-        this.hud.addChild(headerText);        
+        this.hud.addChild(headerText);
+
+        this.paintPlayerBar();
     }
 	
 	/**
@@ -275,18 +289,41 @@ export default class Game {
 		this.hud.addChild(headerText);
 
 		this.gameArea.graphics.clear();
-		this.drawGameAreaBorder();	
+        this.drawGameAreaBorder();
+        
+        this.paintPlayerBar();        
 	}
+
+    paintPlayerBar() {
+        if(!this.playerBar) {
+            this.playerBar = new createjs.Container();
+            this.playerBar.y = this.canvas.height - 35;
+            this.playerBar.x = GAME_AREA_MARGIN.left;
+        }
+        this.hud.addChild(this.playerBar);            
+        this.playerBar.removeAllChildren();
+
+        this.players.forEach((p,i) => {
+            const square = new createjs.Shape();
+            square.graphics
+                .beginFill(p.color)
+                .drawRoundRect (0, 0, 20, 20, 2);
+            square.x = i * (this.gameAreaDimensions.width / this.players.length);
+            this.playerBar.addChild(square);
+
+
+            const text = new createjs.Text(`${p.name}`, "20px Arial", "#ffffff");
+            text.x = square.x + 25;
+            this.playerBar.addChild(text);
+		});
+
+    }
 
 	/**
 	 * Creates dots based on players in the store
 	 */
 	createDots() {
-		const dots = [];
-		this._store.getState().players.forEach(p => {
-			dots.push(new Dot(p.color));
-		})
-		return dots;
+        return this.players.map(p => new Dot(p.color));
 	}
 
 }

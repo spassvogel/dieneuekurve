@@ -7,7 +7,7 @@ export const REQUEST_PLAYER_CREATE = 'REQUEST_PLAYER_CREATE';
 export const REQUEST_PLAYER_READY_STATE = 'REQUEST_PLAYER_READY_STATE';
 export const SET_PLAYER_READY_STATE = 'SET_PLAYER_READY_STATE';
 export const SET_PLAYING = 'SET_PLAYING';
-
+export const SET_SERVER_IP = 'SET_SERVER_IP';
 
 // Action creators
 /**
@@ -85,6 +85,7 @@ export function requestPlayerReadyState(id, ready) {
 	}
 }
 
+
 /**
  * This action is called from the server to set the 'ready' flag
  * on a player. 
@@ -106,6 +107,18 @@ export function setPlaying(playing) {
 	return {
 		type: SET_PLAYING,
 		playing
+	}
+}
+
+
+/**
+ * This action is called from the server to set the ip address of the server
+ * @param {string} ip 
+ */
+export function setServerIP(ip) {
+	return {
+		type: SET_SERVER_IP,
+		ip
 	}
 }
 

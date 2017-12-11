@@ -11,8 +11,9 @@ import App from './../controller/components/App'
 import root from './../shared/reducers/root';
 import * as actions from './../shared/actions';
 
-const socket = io('http://' + window.location.host);
+const socket = io('http://' + window.location.host,  { query: "client=game" });
 const store = createStore(root, 
+	window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),	
 	applyMiddleware(logger, createSocketIoMiddleware(socket, "REQUEST"))
 );
 
