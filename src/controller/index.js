@@ -11,6 +11,9 @@ import root from './../shared/reducers/root';
 import * as actions from './../shared/actions';
 
 const socket = io('http://' + window.location.host);
+socket.on("disconnect", function(){
+	window.location.reload(true);
+});
 const store = createStore(root, 
 	window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),	
 	applyMiddleware(createSocketIoMiddleware(socket, "REQUEST"))

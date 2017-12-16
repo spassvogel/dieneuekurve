@@ -5,31 +5,31 @@ import io from 'socket.io-client';
 import { applyMiddleware, createStore } from 'redux';
 import createSocketIoMiddleware from 'redux-socket.io';
 import { Provider } from 'react-redux';
-import logger from 'redux-logger';
+//import logger from 'redux-logger';
 
-import App from './../controller/components/App'
+import App from './components/App';
 import root from './../shared/reducers/root';
 import * as actions from './../shared/actions';
 
 const socket = io('http://' + window.location.host,  { query: "client=game" });
 const store = createStore(root, 
 	window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),	
-	applyMiddleware(logger, createSocketIoMiddleware(socket, "REQUEST"))
+	applyMiddleware(createSocketIoMiddleware(socket, "REQUEST"))
 );
 
-// const rootEl = document.getElementById('app');
-// const render = () => {
-// 	ReactDOM.render(
-// 		<Provider store={store}>
-// 			<App/>
-// 		</Provider>,
-// 		rootEl
-// 	);
-// };
-// render();
+const rootEl = document.body;
+const render = () => {
+	ReactDOM.render(
+		<Provider store={store}>
+			<App/>
+		</Provider>,
+		rootEl
+	);
+};
+render();
 
-const canvas = document.getElementById('canvas');
-const game = new Game(canvas, store);
+// const canvas = document.getElementById('canvas');
+// const game = new Game(canvas, store);
 store.dispatch({ type:'REQUEST_PLAYERS' });
 
 //init();

@@ -1,4 +1,3 @@
-import KeyboardController from './KeyboardController';
 
 
 const SECOND = 1000;
@@ -7,35 +6,35 @@ const MOVE_SPEED = 150; // amount of pixels per second
 const TURN_SPEED = 0.1; // increment in radians
 const HOLE_SIZE = 25;       //
 
-const LEFT = -1;
-const STRAIGHT = 0;
-const RIGHT = 1;
+export const LEFT = -1;
+export const STRAIGHT = 0;
+export const RIGHT = 1;
 
 export default class Dot {
 
-    constructor(color) {
+    constructor(id, color) {
         this._pos = null;
         this._rotation = Math.PI / 2;
         this._openDist = 0;
     
-        this.ready = true;
         this.alive = true;
-        this.name = null;
         this.midPoint = null;
         this.prevPos = null;
         this.prevMidPoint = null;
     
-        this.controller = new KeyboardController();
+        //this.controller = new KeyboardController();
+        this.direction = STRAIGHT;
         this.stroke = 5;
 
         this.color = color;
+        this.id = id;
     }
 
     update(event) {
         this.prevPos = this.pos;
         this.prevMidPoint = this.midPoint;
 
-        this._rotation += this.controller.direction * TURN_SPEED;
+        this._rotation += this.direction * TURN_SPEED;
 
         /*switch(this.controller.direction) {
             case LEFT:
