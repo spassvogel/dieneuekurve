@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import uuid from 'uuid';
 import ColorPicker from './color/ColorPicker';
 import { requestPlayerCreate } from './../../../shared/actions';
-import {} from './joinplayer.less';
+import styles from './joinplayer.less';
 
 class JoinPlayer extends Component {
 	constructor(props) {
@@ -17,20 +17,21 @@ class JoinPlayer extends Component {
 	}	
 	
 	render() {
-		return <form className='join-player' onSubmit= { this.handleSubmit.bind(this) } >
+		const className = styles['join-player']
+		return <form className={className} onSubmit= { this.handleSubmit.bind(this) } >
 			<div>
 				<label>name</label>
 				<input type='text' id='name' onChange= {this.handleNameChange.bind(this) } />
 			</div>
 			<div> 
 				<label>color</label>
-				<ColorPicker className='input'
+				<ColorPicker className={styles['input']}
 					selectedColor = { this.state.color }
 					players = { this.props.players }
 					onChange = { this.handleColorChange.bind(this) }
 				/>
 			</div>
-			<div className='info'>
+			<div className={styles['info']}>
 				{ `${ this.props.players.length} player(s) in lobby`}
 			</div>
 			<div>
@@ -62,9 +63,7 @@ class JoinPlayer extends Component {
 		this.props.dispatch(action);
 	}
 }
-const mapDispatchToProps = dispatch => {
-	return { }
-}
+
 const mapStateToProps = state => {
 	return {
 		players: state.players

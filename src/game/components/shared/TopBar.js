@@ -1,10 +1,9 @@
 import React from 'react';
 import VerticalLayoutItem from './../../hoc/VerticalLayoutItem';
-import './topBar.less';
-const CLASS_NAME = 'top-bar';
+import styles from './topBar.less';
 
 const TopBar = (props) => {
-	const className = CLASS_NAME + (props.className ? ' ' + props.className : '');
+	const className = styles['top-bar'] + (props.className ? ' ' + props.className : '');
 	
 	return (
 		<div className={className} style={props.style}>

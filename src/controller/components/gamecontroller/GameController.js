@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { requestPlayerReadyState } from './../../../shared/actions';
-import {} from './gamecontroller.less';
+import styles from './gamecontroller.less';
 import { requestControl } from './../../../shared/actions';
 
 class GameController extends Component {
@@ -15,9 +15,9 @@ class GameController extends Component {
 	}
 	
 	render() {
-		const leftClass = `left ${this.state.leftPressed ? 'pressed' : ''}`; 
-		const rightClass = `right ${this.state.rightPressed ? 'pressed' : ''}`; 
-		return <div className='game-controller'>
+		const leftClass = `${styles.left} ${this.state.leftPressed ? styles.pressed : ''}`; 
+		const rightClass = `${styles.right} ${this.state.rightPressed ? styles.pressed : ''}`; 
+		return <div className={styles['game-controller']}>
 			<control-button 
 				class = { leftClass}
 				onTouchStart = { this.handleLeftDown.bind(this) }

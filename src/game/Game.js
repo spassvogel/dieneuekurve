@@ -1,6 +1,6 @@
 import Dot from './Dot';
 import * as actions from './../shared/actions';
-import {} from './game.less';
+import styles from './game.less';
 import 'yuki-createjs';
 import { create } from 'domain';
 

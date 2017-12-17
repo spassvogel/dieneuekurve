@@ -41,8 +41,6 @@ io.on('connection', function(socket){
 				break;
 
 			case actions.REQUEST_PLAYER_CREATE: {
-				console.log('creating player ' + action.id)
-
 				// Adds the given player to the joined player list and emits 
 				// ADD_PLAYERS to all clients, passing the newly created player
 				playerID = action.id;
@@ -66,13 +64,15 @@ io.on('connection', function(socket){
 				}
 
 				io.emit('action', actions.setPlayerReadyState(action.id, action.ready));
-
-				// if(players.length > 1 && players.every(p => p.ready)) {
-				// 	io.emit('action', actions.setPlaying(true));					
-				// }
 				break;
 			}
-				
+
+			case actions.REQUEST_PLAYING: {
+				// Sets playing state. Emits SET_PLAYING				
+				io.emit('action', actions.setPlaying(action.playing));
+				break;
+			}
+
 		}
 	});
  });

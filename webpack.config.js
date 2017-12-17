@@ -25,11 +25,12 @@ module.exports = {
 				presets: ["react", "es2015"]
 			}
 		}, {
-			test: /\.less$/,
-			loader: 'style-loader!css-loader!less-loader'
-		}, {
-			test: /\.css$/,
-			loader: 'style-loader!css-loader'
+			test: /\.(less|css)$/,
+			loader: [
+				'style-loader',
+				'css-loader?modules&importLoaders=1&localIdentName=[name]_[local]_[hash:base64:4]',
+				'less-loader'
+			  ].join('!')
 		}]
 	}
 };

@@ -1,10 +1,10 @@
 import React from 'react';
 import ColorSwatch from './ColorSwatch'
-import {} from './color.less';
+import styles from './color.less';
 
-const CLASS_NAME = 'color-picker';
+
 const ColorPicker = (props) => {
-	const className = CLASS_NAME + (props.className ? ' ' + props.className : '');
+	const className = styles['color-picker'] + (props.className ? ' ' + props.className : '');
 	const getPlayerByColor = (color) => {
 		return props.players.find(p => p.color === color) || null;
 	}

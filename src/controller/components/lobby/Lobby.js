@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import PlayerList from './PlayerList';
 import { requestPlayerReadyState } from './../../../shared/actions';
-import {} from './lobby.less';
+import styles from './lobby.less';
 
 class Lobby extends Component {
 	constructor(props) {
@@ -12,7 +12,7 @@ class Lobby extends Component {
 
 		const readyText = `${this.props.ready ? '✔' : ' '} Ready`;
 
-		return <div className='lobby'>
+		return <div className={styles['lobby']}>
 			<PlayerList { ... this.props }/>
 			<button onClick= { this.handleReadyClick.bind(this) } >
 				{ readyText }
@@ -31,11 +31,6 @@ const mapStateToProps = state => {
 		players: state.players,
 		ready: state.ready,
 		currentPlayer: state.currentPlayer,
-	}
-}
-
-const mapDispatchToProps = (dispatch, ownProps) => {
-	return {
 	}
 }
 	

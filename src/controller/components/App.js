@@ -3,17 +3,26 @@ import { connect } from 'react-redux';
 import JoinPlayer from './joinplayer/JoinPlayer';
 import Lobby from './lobby/Lobby';
 import GameController from './gamecontroller/GameController';
-import {} from './app.less';
+import styles from './app.less';
+
+const CLASS_NAME = styles['app'];
 
 class App extends Component {
 	render() {
+		const className = CLASS_NAME + (this.props.className ? ' ' + this.props.className : '');
+		let content;
 		if(this.props.currentPlayer === null) {
-			return  <JoinPlayer/>;
+			content = <JoinPlayer localMode={this.props.localMode}/>;
 		} else if (!this.props.playing) {
-			return <Lobby/>			
+			content = <Lobby/>			
 		} else {
-			return <GameController />
+			content = <GameController />
 		}
+		return (
+			<div className={className}>
+				{ content}
+			</div>
+		);
 	}
 }
 const mapStateToProps = state => {

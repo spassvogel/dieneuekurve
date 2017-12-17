@@ -5,6 +5,7 @@ export const REQUEST_CONTROL = 'REQUEST_CONTROL';
 export const REQUEST_PLAYERS = 'REQUEST_PLAYERS';
 export const REQUEST_PLAYER_CREATE = 'REQUEST_PLAYER_CREATE';
 export const REQUEST_PLAYER_READY_STATE = 'REQUEST_PLAYER_READY_STATE';
+export const REQUEST_PLAYING = 'REQUEST_PLAYING';
 export const SET_PLAYER_READY_STATE = 'SET_PLAYER_READY_STATE';
 export const SET_PLAYING = 'SET_PLAYING';
 export const SET_SERVER_IP = 'SET_SERVER_IP';
@@ -82,6 +83,17 @@ export function requestPlayerReadyState(id, ready) {
 		type: REQUEST_PLAYER_READY_STATE,
 		id,
 		ready
+	}
+}
+/**
+ * This action requests the server to set the 'playing' flag
+ * Will call back with SET_PLAYING
+ * @param {boolean} playing
+ */
+export function requestPlaying(playing) {
+	return {
+		type: REQUEST_PLAYING,
+		playing
 	}
 }
 

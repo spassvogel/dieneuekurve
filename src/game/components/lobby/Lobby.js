@@ -5,12 +5,10 @@ import TopBar from './../shared/TopBar';
 import BottomBar from './../shared/BottomBar';
 import Layout from './../layout/Layout';
 import Canvas from './../canvas/Canvas';
-import './lobby.less';
-
-const CLASS_NAME = 'lobby';
+import styles from './lobby.less';
 
 const Lobby = (props) => {
-	const className = CLASS_NAME + (props.className ? ' ' + props.className : '');
+	const className = styles['lobby'] + (props.className ? ' ' + props.className : '');
 	let bottomLine1;
 
 	if(props.players.length < props.numPlayersRequired) {
@@ -29,7 +27,6 @@ const Lobby = (props) => {
 	return  (
 		<div className= {className }>
 			<TopBar height="5">Starting game</TopBar>
-			{/* <Canvas height="80" initialWidth="1280" aspectRatio={ 9/16 } /> */}
 			<PlayerList { ... props }/>
 			<BottomBar height="15">{ bottomLine1 } { bottomLine2 }</BottomBar>
 		</div>

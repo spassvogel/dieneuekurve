@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Lobby from './lobby/Lobby';
 import Playing from './playing/Playing';
-import {} from './app.less';
+import ControllerApp from './../../controller/components/App'
+import styles from './app.less';
+import { requestPlaying } from './../../shared/actions';
 
-const CLASS_NAME = 'app';
 const NUM_PLAYERS_REQUIRED = 2; // Minimum number of players required to start game
 export const GAME_STATES = {
     playing: 'playing',            			 // We be playin'
@@ -24,13 +25,13 @@ class App extends Component {
 	}
 
 	render() {
-		const className = CLASS_NAME + (this.props.className ? ' ' + this.props.className : '');
+		const className = styles['app'] + (this.props.className ? ' ' + this.props.className : '');
 
 		let content = null
 		switch(this.state.gameState){
 			case GAME_STATES.waitingForGame:
 				content = <Lobby 
-					className='page' 
+					className={styles['page']}
 					numPlayersRequired={NUM_PLAYERS_REQUIRED}
 					players={this.props.players}
 					serverIP={this.props.serverIP}
@@ -40,7 +41,7 @@ class App extends Component {
 				content = <Playing 
 					round={1}
 					gameState={this.state.gameState}
-					className='page' 
+					className={styles['page']}
 					players={this.props.players }
 					startRound={this.startRound}
 				/>;
@@ -48,11 +49,13 @@ class App extends Component {
 		return (
 			<div className={className}>
 				{ content }
+				<ControllerApp className={styles['local-controller-arrows']}/>
 			</div>
 		)	
 	}
 
 	startRound() {
+		this.props.dispatch(requestPlaying(true));
 		this.setState({
 			gameState: GAME_STATES.playing
 		})

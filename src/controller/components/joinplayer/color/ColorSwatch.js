@@ -1,7 +1,9 @@
 import React from 'react';
+import styles from './color.less';
 
-const CLASS_NAME = 'swatch';
-const SELECTED_CLASS_NAME = 'selected';
+const CLASS_NAME = styles['swatch'];
+const SELECTED_CLASS_NAME = styles['selected'];
+const DISABLED_CLASS_NAME = styles['disabled'];
 
 export const ColorSwatch = ({ color, selected, disabled, className, onClick, title = color }) => {
 
@@ -15,7 +17,7 @@ export const ColorSwatch = ({ color, selected, disabled, className, onClick, tit
         classNames.push(className);
     }
     if(disabled) {
-        classNames.push('disabled');
+        classNames.push(DISABLED_CLASS_NAME);
     }
     
     const svgClass = selected ? SELECTED_CLASS_NAME : '';
