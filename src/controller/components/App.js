@@ -8,10 +8,18 @@ import styles from './app.less';
 const CLASS_NAME = styles['app'];
 
 class App extends Component {
+	constructor() {
+		super();
+
+		this.state = {
+			currentPlayer: null
+		}
+	}
+
 	render() {
 		const className = CLASS_NAME + (this.props.className ? ' ' + this.props.className : '');
 		let content;
-		if(this.props.currentPlayer === null) {
+		if(this.state.currentPlayer === null) {
 			content = <JoinPlayer localMode={this.props.localMode}/>;
 		} else if (!this.props.playing) {
 			content = <Lobby/>			

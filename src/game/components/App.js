@@ -18,10 +18,14 @@ class App extends Component {
 		super();
 
 		this.state = {
-			gameState: GAME_STATES.waitingForGame
+			gameState: GAME_STATES.waitingForGame,
+			localPlayers: {
+				'arrows': -1			// -1 = not present, 0 = dialogue open, 1 = ready
+			}
 		}
 
 		this.startRound = this.startRound.bind(this);
+		this.handleArrowsButtonClicked = this.handleArrowsButtonClicked.bind(this);
 	}
 
 	render() {
@@ -35,6 +39,8 @@ class App extends Component {
 					numPlayersRequired={NUM_PLAYERS_REQUIRED}
 					players={this.props.players}
 					serverIP={this.props.serverIP}
+					localPlayers={this.state.localPlayers}
+					arrowsButtonClicked={this.handleArrowsButtonClicked}
 				/>;
 				break;
 			default:
@@ -49,7 +55,9 @@ class App extends Component {
 		return (
 			<div className={className}>
 				{ content }
-				<ControllerApp className={styles['local-controller-arrows']}/>
+				{ this.state.localPlayers['arrows'] === 0 ? 
+					<ControllerApp className={styles['local-controller-arrows']}/> : null				
+				}
 			</div>
 		)	
 	}
@@ -58,6 +66,15 @@ class App extends Component {
 		this.props.dispatch(requestPlaying(true));
 		this.setState({
 			gameState: GAME_STATES.playing
+		})
+	}
+
+	handleArrowsButtonClicked() {
+		this.setState({
+			localPlayers: { 
+				...this.state.localPlayers,
+				'arrows': 0
+			}
 		})
 	}
 

@@ -24,9 +24,13 @@ const Lobby = (props) => {
 		bottomLine2 = <p>Point your mobile browser at: {props.serverIP}</p>
 	}
 
+	const localPlayerArrow = (
+		<button onClick={props.arrowsButtonClicked}>arrow keys</button>
+	)
+
 	return  (
 		<div className= {className }>
-			<TopBar height="5">Starting game</TopBar>
+			<TopBar height="5">Starting game { localPlayerArrow } </TopBar>
 			<PlayerList { ... props }/>
 			<BottomBar height="15">{ bottomLine1 } { bottomLine2 }</BottomBar>
 		</div>
