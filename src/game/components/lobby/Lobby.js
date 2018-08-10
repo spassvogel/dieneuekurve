@@ -1,6 +1,5 @@
 import React  from 'react';
 import PlayerList from '../../../controller/components/lobby/PlayerList';
-import { requestPlayerReadyState } from './../../../shared/actions';
 import TopBar from './../shared/TopBar';
 import BottomBar from './../shared/BottomBar';
 import styles from './lobby.less';
@@ -28,7 +27,6 @@ const Lobby = (props) => {
 	const localPlayerArrow = (
 		<button onClick={props.arrowsButtonClicked}>arrow keys</button>
 	)
-
 	return  (
 		<div className= {className }>
 			<TopBar height="5">Lobby  { localPlayerArrow } { localPlayerZx } </TopBar>

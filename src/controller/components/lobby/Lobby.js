@@ -26,7 +26,6 @@ class Lobby extends Component {
 	}
 
 	handleReadyClick() {
-		console.log('ready')
 		const action = requestPlayerReadyState(this.props.currentPlayer, !this.state.ready, true);
 		this.props.dispatch(action);
 

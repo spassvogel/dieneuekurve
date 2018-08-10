@@ -9,8 +9,8 @@ class JoinPlayer extends Component {
 
 		this.state = {
 			name: props.playerName || '',
-			color: '',         // color chosen
-			formValid: false
+			color: props.playerColor || '',         // color chosen
+			formValid: props.playerName && props.playerColor
 		}
 	}	
 	

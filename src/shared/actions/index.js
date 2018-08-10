@@ -5,10 +5,13 @@ export const REQUEST_CONTROL = 'REQUEST_CONTROL';
 export const REQUEST_PLAYERS = 'REQUEST_PLAYERS';
 export const REQUEST_PLAYER_CREATE = 'REQUEST_PLAYER_CREATE';
 export const REQUEST_PLAYER_READY_STATE = 'REQUEST_PLAYER_READY_STATE';
+export const REQUEST_PLAYER_REMOVE = 'REQUEST_PLAYER_REMOVE';
 export const REQUEST_PLAYING = 'REQUEST_PLAYING';
 export const SET_PLAYER_READY_STATE = 'SET_PLAYER_READY_STATE';
 export const SET_PLAYING = 'SET_PLAYING';
 export const SET_SERVER_IP = 'SET_SERVER_IP';
+
+// All actions that start with 'REQUEST' will go through the middleware
 
 // Action creators
 /**
@@ -63,12 +66,24 @@ export function requestPlayers() {
  * @param {string} name of player to create
  * @param {string} color of player to create
  */
-export function requestPlayerCreate(id, name, color) {
+export function requestPlayerCreate(id, name, color) {	
 	return { 
 		type: REQUEST_PLAYER_CREATE,
 		id,
 		name,
 		color
+	}
+}
+
+/**
+ * This action requests the server to remove a player
+ * Will call back with REMOVE_PLAYER
+ * @param {string} id
+ */
+export function requestPlayerRemove(id) {
+	return {
+		type: REQUEST_PLAYER_REMOVE,
+		id
 	}
 }
 
@@ -87,6 +102,7 @@ export function requestPlayerReadyState(id, ready, local) {
 		local
 	}
 }
+
 /**
  * This action requests the server to set the 'playing' flag
  * Will call back with SET_PLAYING

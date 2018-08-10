@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
-import { requestPlayerReadyState } from './../../../shared/actions';
 import styles from './gamecontroller.less';
 import { requestControl } from './../../../shared/actions';
 

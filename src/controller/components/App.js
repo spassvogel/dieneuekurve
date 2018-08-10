@@ -27,6 +27,7 @@ class App extends Component {
 		if(this.state.currentPlayer === null) {
 			content = <JoinPlayer 
 				playerName={this.props.playerName}
+				playerColor = { this.props.playerColor }
 				localMode={this.props.localMode} 
 				submitClick={this.handleSubmitClick}
 			/>;
@@ -53,6 +54,9 @@ class App extends Component {
 		const action = requestPlayerCreate(id, name, color);
 		this.props.dispatch(action);
 
+		if(typeof this.props.playerJoined === 'function') {
+			this.props.playerJoined(id);
+		}
 	}
 
 	handlePlayerReady(){
@@ -72,6 +76,7 @@ App.propTypes = {
 	playing: PropTypes.bool,
 	localMode: PropTypes.bool,
 	title: PropTypes.string,
+	playerReady: PropTypes.func,
 	playerReady: PropTypes.func,
 }
 

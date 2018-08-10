@@ -31,8 +31,10 @@ io.on('connection', function(socket){
 		// Removes player from all other clients
 		io.emit('action', actions.removePlayer(playerID));
 	});
-
 	socket.on('action', (action) => {
+
+		console.log(action.type)
+
 		switch(action.type) {
 
 			case actions.REQUEST_PLAYERS:
@@ -64,6 +66,16 @@ io.on('connection', function(socket){
 				}
 
 				io.emit('action', actions.setPlayerReadyState(action.id, action.ready));
+				break;
+			}
+
+			case actions.REQUEST_PLAYER_REMOVE: {
+				// Removes player from list
+				const index = players.findIndex(p => p.id === action.id);		
+				if (index !== -1) {
+					players.splice(index, 1);
+				}
+				io.emit('action', actions.removePlayer(action.id));
 				break;
 			}
 
