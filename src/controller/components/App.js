@@ -4,6 +4,9 @@ import JoinPlayer from './joinplayer/JoinPlayer';
 import Lobby from './lobby/Lobby';
 import GameController from './gamecontroller/GameController';
 import styles from './app.less';
+import uuid from 'uuid';
+import { requestPlayerCreate } from './../../shared/actions';
+import PropTypes from 'prop-types';
 
 const CLASS_NAME = styles['app'];
 
@@ -11,6 +14,8 @@ class App extends Component {
 	constructor() {
 		super();
 
+		this.handleSubmitClick = this.handleSubmitClick.bind(this);
+		this.handlePlayerReady = this.handlePlayerReady.bind(this);
 		this.state = {
 			currentPlayer: null
 		}
@@ -20,24 +25,54 @@ class App extends Component {
 		const className = CLASS_NAME + (this.props.className ? ' ' + this.props.className : '');
 		let content;
 		if(this.state.currentPlayer === null) {
-			content = <JoinPlayer localMode={this.props.localMode}/>;
+			content = <JoinPlayer 
+				playerName={this.props.playerName}
+				localMode={this.props.localMode} 
+				submitClick={this.handleSubmitClick}
+			/>;
 		} else if (!this.props.playing) {
-			content = <Lobby/>			
+			content = <Lobby currentPlayer={this.state.currentPlayer} playerReady={this.handlePlayerReady}/>			
 		} else {
 			content = <GameController />
 		}
+		
+		const title = this.props.title || '';
 		return (
 			<div className={className}>
+				<div> {title }</div>
 				{ content}
 			</div>
 		);
 	}
+
+	handleSubmitClick(name, color, type='remote') {
+		const id = uuid.v4();
+		this.setState({
+			currentPlayer: id
+		});
+		const action = requestPlayerCreate(id, name, color);
+		this.props.dispatch(action);
+
+	}
+
+	handlePlayerReady(){
+		if(typeof this.props.playerReady === 'function') {
+			this.props.playerReady(this.state.currentPlayer);
+		}
+	}
 }
+
 const mapStateToProps = state => {
 	return {
-		currentPlayer: state.currentPlayer,
 		playing: state.playing
 	}
+}
+
+App.propTypes = {
+	playing: PropTypes.bool,
+	localMode: PropTypes.bool,
+	title: PropTypes.string,
+	playerReady: PropTypes.func,
 }
 
 export default connect(

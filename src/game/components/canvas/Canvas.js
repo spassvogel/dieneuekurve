@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import styles from './canvas.less'
 
 class Canvas extends Component {
 	constructor() {
@@ -10,15 +10,9 @@ class Canvas extends Component {
 		const { initialWidth, height, aspectRatio } = this.props;
 		const initialHeight = initialWidth * aspectRatio / 100 * height;
 		return (
-			<canvas width={initialWidth} height={initialHeight} state={ this.props.gameState }></canvas> 
+			<canvas width={initialWidth} height={initialHeight} state={ this.props.gameState } className={styles.canvas}></canvas> 
 		)	
 	}
 }
-// const Canvas = ({ initialWidth, height, aspectRatio }) => {
-// 	const initialHeight = initialWidth * aspectRatio / 100 * height;
-// 	return (
-// 		<canvas width={initialWidth} height={initialHeight}></canvas>
-// 	)
-// } 
 
 export default Canvas;

@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import uuid from 'uuid';
 import ColorPicker from './color/ColorPicker';
-import { requestPlayerCreate } from './../../../shared/actions';
 import styles from './joinplayer.less';
 
 class JoinPlayer extends Component {
@@ -10,7 +8,7 @@ class JoinPlayer extends Component {
     	super(props);
 
 		this.state = {
-			name: '',
+			name: props.playerName || '',
 			color: '',         // color chosen
 			formValid: false
 		}
@@ -21,7 +19,7 @@ class JoinPlayer extends Component {
 		return <form className={className} onSubmit= { this.handleSubmit.bind(this) } >
 			<div>
 				<label>name</label>
-				<input type='text' id='name' onChange= {this.handleNameChange.bind(this) } />
+				<input type='text' value={this.state.name} id='name' onChange= {this.handleNameChange.bind(this) } />
 			</div>
 			<div> 
 				<label>color</label>
@@ -56,11 +54,8 @@ class JoinPlayer extends Component {
 	
 	handleSubmit(event) {
 		event.preventDefault();
-		
 		const { name, color } = this.state;
-		const id = uuid.v4();
-		const action = requestPlayerCreate(id, name, color);
-		this.props.dispatch(action);
+		this.props.submitClick(name, color );
 	}
 }
 

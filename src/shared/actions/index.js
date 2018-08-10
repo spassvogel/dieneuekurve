@@ -77,12 +77,14 @@ export function requestPlayerCreate(id, name, color) {
  * on a player. Will call back with SET_PLAYER_READY_STATE
  * @param {string} id
  * @param {boolean} ready
+ * @param {boolean} local true if local player, false if remote controller
  */
-export function requestPlayerReadyState(id, ready) {
+export function requestPlayerReadyState(id, ready, local) {
 	return {
 		type: REQUEST_PLAYER_READY_STATE,
 		id,
-		ready
+		ready,
+		local
 	}
 }
 /**

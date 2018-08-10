@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './lobby.less';
+import styles from './playerList.less';
 
 
 const PlayerList = (props) => (

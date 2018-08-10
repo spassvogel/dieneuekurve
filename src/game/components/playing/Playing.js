@@ -4,7 +4,7 @@ import PlayerBar from './PlayerBar/PlayerBar';
 import TopBar from './../shared/TopBar';
 import BottomBar from './../shared/BottomBar';
 import Canvas from './../canvas/Canvas';
-import GameCanvas from '../../GameCanvas'
+import GameCanvas from '../../canvas/GameCanvas'
 import { GAME_STATES } from './../App';
 
 const CLASS_NAME = 'playing';
@@ -80,7 +80,6 @@ class Playing extends Component {
 
 	handleKeyDown(event) {
 		const playerId = this.props.players[0].id
-		
 		switch(event.key){
 			case "ArrowLeft":
 				this.gameCanvas.control(playerId, 'left', true);

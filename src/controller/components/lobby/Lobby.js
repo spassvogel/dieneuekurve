@@ -1,12 +1,17 @@
 import { connect } from 'react-redux';
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import PlayerList from './PlayerList';
 import { requestPlayerReadyState } from './../../../shared/actions';
 import styles from './lobby.less';
 
 class Lobby extends Component {
 	constructor(props) {
-    	super(props);
+		super(props);
+		
+		this.state = {
+			ready: false
+		}
 	}
 	render() {
 
@@ -21,18 +26,27 @@ class Lobby extends Component {
 	}
 
 	handleReadyClick() {
-		const action = requestPlayerReadyState(this.props.currentPlayer, !this.props.ready);
+		console.log('ready')
+		const action = requestPlayerReadyState(this.props.currentPlayer, !this.state.ready, true);
 		this.props.dispatch(action);
+
+		if(typeof this.props.playerReady === 'function') {
+			this.props.playerReady();
+		}
 	}
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state, ownProps) => {
+	const player = state.players.find(p => p.id === ownProps.currentPlayer);
 	return { 
 		players: state.players,
-		ready: state.ready,
-		currentPlayer: state.currentPlayer,
+		ready: player && player.ready
 	}
 }
+Lobby.propTypes = {
+	currentPlayer: PropTypes.string,
+	playerReady: PropTypes.func
+};
 	
 export default connect(
 	mapStateToProps

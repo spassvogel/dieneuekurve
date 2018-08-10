@@ -28,8 +28,4 @@ const render = () => {
 };
 render();
 
-// const canvas = document.getElementById('canvas');
-// const game = new Game(canvas, store);
 store.dispatch({ type:'REQUEST_PLAYERS' });
-
-//init();

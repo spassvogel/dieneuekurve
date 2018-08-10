@@ -3,8 +3,6 @@ import PlayerList from '../../../controller/components/lobby/PlayerList';
 import { requestPlayerReadyState } from './../../../shared/actions';
 import TopBar from './../shared/TopBar';
 import BottomBar from './../shared/BottomBar';
-import Layout from './../layout/Layout';
-import Canvas from './../canvas/Canvas';
 import styles from './lobby.less';
 
 const Lobby = (props) => {
@@ -21,16 +19,19 @@ const Lobby = (props) => {
 
 	let bottomLine2;
 	if(props.serverIP){
-		bottomLine2 = <p>Point your mobile browser at: {props.serverIP}</p>
+		bottomLine2 = <p>Point your mobile browser at: {props.serverIP}/controller</p>
 	}
 
+	const localPlayerZx = (
+		<button onClick={props.zxButtonClicked}>z-x keys</button>		
+	)
 	const localPlayerArrow = (
 		<button onClick={props.arrowsButtonClicked}>arrow keys</button>
 	)
 
 	return  (
 		<div className= {className }>
-			<TopBar height="5">Starting game { localPlayerArrow } </TopBar>
+			<TopBar height="5">Lobby  { localPlayerArrow } { localPlayerZx } </TopBar>
 			<PlayerList { ... props }/>
 			<BottomBar height="15">{ bottomLine1 } { bottomLine2 }</BottomBar>
 		</div>

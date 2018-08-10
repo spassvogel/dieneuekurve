@@ -20,18 +20,21 @@ class App extends Component {
 		this.state = {
 			gameState: GAME_STATES.waitingForGame,
 			localPlayers: {
-				'arrows': -1			// -1 = not present, 0 = dialogue open, 1 = ready
+				'zx': null,				// null = not present, 'new' = dialogue open, (other) = player id, ready
+				'arrows': null			// null = not present, 'new' = dialogue open, (other) = player id, ready
 			}
 		}
 
 		this.startRound = this.startRound.bind(this);
+		this.handleZxButtonClicked = this.handleZxButtonClicked.bind(this);
 		this.handleArrowsButtonClicked = this.handleArrowsButtonClicked.bind(this);
+		this.handleZxPlayerReady = this.handleZxPlayerReady.bind(this);
+		this.handleArrowsPlayerReady = this.handleArrowsPlayerReady.bind(this);
 	}
 
 	render() {
 		const className = styles['app'] + (this.props.className ? ' ' + this.props.className : '');
-
-		let content = null
+			let content = null
 		switch(this.state.gameState){
 			case GAME_STATES.waitingForGame:
 				content = <Lobby 
@@ -40,6 +43,7 @@ class App extends Component {
 					players={this.props.players}
 					serverIP={this.props.serverIP}
 					localPlayers={this.state.localPlayers}
+					zxButtonClicked={this.handleZxButtonClicked}
 					arrowsButtonClicked={this.handleArrowsButtonClicked}
 				/>;
 				break;
@@ -52,12 +56,30 @@ class App extends Component {
 					startRound={this.startRound}
 				/>;
 		}
+		
+		let playerZXController;
+		if(this.state.localPlayers['zx'] === 'new') {
+			playerZXController = <ControllerApp className = { styles['local-controller-zx'] }
+				playerName = 'player1'
+				playerReady = { this.handleZxPlayerReady  }
+				title = 'Local player using: "z" and "x"'
+			/>
+		}
+		let playerArrowsController;
+		if(this.state.localPlayers['arrows'] === 'new') {
+			playerArrowsController = <ControllerApp className = { styles['local-controller-arrows'] }
+				playerName = 'player2'
+				playerReady = { this.handleArrowsPlayerReady  }
+				title = '"left" and "right"'
+			/>
+		}
+
+
 		return (
 			<div className={className}>
 				{ content }
-				{ this.state.localPlayers['arrows'] === 0 ? 
-					<ControllerApp className={styles['local-controller-arrows']}/> : null				
-				}
+				{ playerZXController }
+				{ playerArrowsController }
 			</div>
 		)	
 	}
@@ -69,11 +91,47 @@ class App extends Component {
 		})
 	}
 
+	/**
+	 * Handles clicking on the 'arrows' local player button */	
 	handleArrowsButtonClicked() {
+		// Toggle state between null and 'new' 
 		this.setState({
 			localPlayers: { 
 				...this.state.localPlayers,
-				'arrows': 0
+				'arrows':  this.state.localPlayers['arrows'] === null ? 'new' : null
+			}
+		})
+	}
+
+	/**
+	 * Handles clicking on the 'zx' local player button */	
+	handleZxButtonClicked() {
+		if(this.state.localPlayers['zx'] !== null && this.state.localPlayers['zx'] !== 'new'){
+			
+		}
+		// Toggle state between null and 'new'
+		this.setState({
+			localPlayers: { 
+				...this.state.localPlayers,
+				'zx':  this.state.localPlayers['zx'] === null ? 'new' : null
+			}
+		})
+	}
+
+	handleZxPlayerReady(id){
+		this.setState({
+			localPlayers: { 
+				...this.state.localPlayers,
+				'zx':  id
+			}
+		})
+	}
+
+	handleArrowsPlayerReady(id){
+		this.setState({
+			localPlayers: { 
+				...this.state.localPlayers,
+				'arrows':  id
 			}
 		})
 	}

@@ -10,9 +10,9 @@ export default function ready(state = false, action, sectionState) {
 		
 		case SET_PLAYING:
 			// Change playing state only if joined
-			if (sectionState.currentPlayer){
+			//if (sectionState.currentPlayer){
 				return action.playing;				
-			}
+			//}
 		default:
 			return state;		
 	} 
