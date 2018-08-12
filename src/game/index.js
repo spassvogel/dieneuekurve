@@ -9,7 +9,6 @@ import { Provider } from 'react-redux';
 
 import App from './components/App';
 import root from './../shared/reducers/root';
-import * as actions from './../shared/actions';
 
 const socket = io('http://' + window.location.host,  { query: "client=game" });
 const store = createStore(root, 
@@ -27,5 +26,3 @@ const render = () => {
 	);
 };
 render();
-
-store.dispatch({ type:'REQUEST_PLAYERS' });

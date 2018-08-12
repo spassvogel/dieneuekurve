@@ -89,7 +89,8 @@ export function requestPlayerRemove(id) {
 
 /**
  * This action requests the server to set the 'ready' flag
- * on a player. Will call back with SET_PLAYER_READY_STATE
+ * on a player. This gets called from the Lobby
+ * Will call back with SET_PLAYER_READY_STATE
  * @param {string} id
  * @param {boolean} ready
  * @param {boolean} local true if local player, false if remote controller

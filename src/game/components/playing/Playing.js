@@ -19,6 +19,7 @@ class Playing extends Component {
 		}
 		this.gameCanvas = null;
 		this.handlePlayerDies = this.handlePlayerDies.bind(this);
+		this.handlePlayerWins = this.handlePlayerWins.bind(this);
 		this.handleKeyDown = this.handleKeyDown.bind(this);
 		this.handleKeyUp = this.handleKeyUp.bind(this);
 	}
@@ -35,22 +36,25 @@ class Playing extends Component {
 		)	
 	}
 
-	componentWillReceiveProps(nextProps) {
-		switch(nextProps.gameState){
-			case GAME_STATES.playing:
-				this.setState({
-					topBarText:  `Round ${this.props.round}. Achtung!`
-				});
-				break;
-		}		
-	}
-
 	componentDidMount() {
 		this.gameCanvas = new GameCanvas(ReactDOM.findDOMNode(this.canvas));
 		this.gameCanvas.onPlayerDies = this.handlePlayerDies;
-		this.gameCanvas.prepareRound(this.props.players);
+		this.gameCanvas.onPlayerWins = this.handlePlayerWins;
+		//this.prepareNextRound();
 
+		window.addEventListener("keydown", this.handleKeyDown);
+		window.addEventListener("keyup", this.handleKeyUp);
+	}
+
+	componentWillUnmount() {
+		window.removeEventListener("keydown", this.handleKeyDown);
+		window.removeEventListener("keyup", this.handleKeyUp);
+	}
+
+	componentWillReceiveProps(nextProps) {
+		console.log('cwrp');
 		if(this.props.gameState === GAME_STATES.waitingForRound){
+			this.gameCanvas.prepareRound(this.props.players);
 			let counter = COUNTDOWN;
 			const interval = 1000;
 
@@ -58,6 +62,10 @@ class Playing extends Component {
 				if(--counter === 0){
 					clearInterval(counterInterval);
 					setTimeout(() => {
+						this.setState({
+							topBarText:  `Round ${this.props.round}. Achtung!`
+						});
+
 						this.gameCanvas.startRound();
 					}, interval);					
 				}
@@ -67,15 +75,7 @@ class Playing extends Component {
 					});
 				}
 			}, interval);	
-		}
-
-		window.addEventListener("keydown", this.handleKeyDown);
-		window.addEventListener("keyup", this.handleKeyUp);
-	}
-
-	componentWillUnmount() {
-		window.removeEventListener("keydown", this.handleKeyDown);
-		window.removeEventListener("keyup", this.handleKeyUp);
+		}		
 	}
 
 	handleKeyDown(event) {
@@ -89,6 +89,7 @@ class Playing extends Component {
 				break;
 		}
 	}
+	
 	handleKeyUp(event) {
 		const playerId = this.props.players[0].id
 		
@@ -102,8 +103,18 @@ class Playing extends Component {
 		}
 	}
 
-	handlePlayerDies(player) {
-		console.log(player.id);
+	handlePlayerDies(id) {
+
+	}
+
+	handlePlayerWins(id) {
+		const player = this.props.players.find(p => p.id === id);
+		this.setState({
+			topBarText: <div><span style={{ 'color': player.color }} >{ player.name }</span> { "wins! " } </div>					
+		});
+		if(typeof this.props.playerWins === 'function') {
+			this.props.playerWins(id);
+		}		
 	}
 }
  

@@ -42,6 +42,7 @@ export default class GameCanvas {
 
     /** Events */
     onPlayerDies() { }   // Override this    
+    onPlayerWins() { }   // Override this    
 
     /** Public methods */
     prepareRound(players) {
@@ -148,6 +149,8 @@ export default class GameCanvas {
             const activeDots = this.dots.filter(dot => dot.alive);
             if(activeDots.length === 1){
                 // someone wins
+                this.paused = true;
+                this.onPlayerWins(activeDots[0].id);
             }
             activeDots.forEach((dot) => {
                 // Randomly open the line
@@ -161,7 +164,7 @@ export default class GameCanvas {
                 if(dotHitSomething(dot)){
                     // Create the event
                     if(typeof this.onPlayerDies === 'function'){
-                        this.onPlayerDies(dot);
+                        this.onPlayerDies(dot.id);
                     }
 
                     dot.alive = false;

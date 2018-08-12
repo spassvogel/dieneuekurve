@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { Component  } from 'react';
+import { connect  } from 'react-redux';
 import Lobby from './lobby/Lobby';
 import Playing from './playing/Playing';
 import ControllerApp from './../../controller/components/App'
@@ -7,14 +7,14 @@ import styles from './app.less';
 import { 
 	requestPlaying,
 	requestPlayerRemove
-} from './../../shared/actions';
+ } from './../../shared/actions';
 
 const NUM_PLAYERS_REQUIRED = 2; // Minimum number of players required to start game
 export const GAME_STATES = {
     playing: 'playing',            	       // We be playin'
     waitingForRound: 'waitingForRound',    // We wait three seconds and start the next round
     waitingForGame: 'waitingForGame'       // We wait for at least two players to be there and be ready
-}
+ }
 
 class App extends Component {
 	constructor() {
@@ -22,6 +22,7 @@ class App extends Component {
 
 		this.state = {
 			gameState: GAME_STATES.waitingForGame,
+			round: 1,
 			localPlayers: {
 				'zx': null,				// null = not present, 'new' = dialogue open, (other) = player id, joined
 				'arrows': null			// null = not present, 'new' = dialogue open, (other) = player id, joined
@@ -29,6 +30,7 @@ class App extends Component {
 		}
 
 		this.startRound = this.startRound.bind(this);
+		this.handlePlayerWins = this.handlePlayerWins.bind(this);
 		this.handleZxButtonClicked = this.handleZxButtonClicked.bind(this);
 		this.handleArrowsButtonClicked = this.handleArrowsButtonClicked.bind(this);
 		this.handleZxPlayerJoined = this.handleZxPlayerJoined.bind(this);
@@ -42,50 +44,51 @@ class App extends Component {
 		switch(this.state.gameState){
 			case GAME_STATES.waitingForGame:
 				content = <Lobby 
-					className={styles['page']}
-					numPlayersRequired={NUM_PLAYERS_REQUIRED}
-					players={this.props.players}
-					serverIP={this.props.serverIP}
-					localPlayers={this.state.localPlayers}
-					zxButtonClicked={this.handleZxButtonClicked}
-					arrowsButtonClicked={this.handleArrowsButtonClicked}
+					className = { styles['page'] }
+					numPlayersRequired = { NUM_PLAYERS_REQUIRED }
+					players = { this.props.players }
+					serverIP = { this.props.serverIP }
+					localPlayers = { this.state.localPlayers }
+					zxButtonClicked = { this.handleZxButtonClicked }
+					arrowsButtonClicked = { this.handleArrowsButtonClicked }
 				/>;
 				break;
 			default:
 				content = <Playing 
-					round={1}
-					gameState={this.state.gameState}
-					className={styles['page']}
-					players={this.props.players }
-					startRound={this.startRound}
+					round = { this.state.round }
+					gameState = { this.state.gameState }
+					className = { styles['page'] }
+					players = { this.props.players  }
+					playerWins = { this.playerWins }
+					startRound = { this.startRound }
 				/>;
 		}
 		
 		let playerZXController;
 		if(this.state.localPlayers['zx'] !== null) {
-			playerZXController = <ControllerApp className = { styles['local-controller-zx'] }
+			playerZXController = <ControllerApp className = { styles['local-controller-zx']  }
 				playerName = 'player1'
 				playerColor = '#db3e00'
-				playerJoined = { this.handleZxPlayerJoined  }
+				playerJoined = { this.handleZxPlayerJoined   }
 				title = 'Local player using: "z" and "x"'
 			/>
 		}
 		let playerArrowsController;
 		if(this.state.localPlayers['arrows'] !== null) {
-			playerArrowsController = <ControllerApp className = { styles['local-controller-arrows'] }
+			playerArrowsController = <ControllerApp className = { styles['local-controller-arrows']  }
 				playerName = 'player2'
 				playerColor = '#5300eb'
-				playerJoined = { this.handleArrowsPlayerJoined  }
+				playerJoined = { this.handleArrowsPlayerJoined   }
 				title = 'Local player using: "left" and "right"'
 			/>
 		}
 
 
 		return (
-			<div className={className}>
-				{ content }
-				{ playerZXController }
-				{ playerArrowsController }
+			<div className = { className }>
+				{ content  }
+				{ playerZXController  }
+				{ playerArrowsController  }
 			</div>
 		)	
 	}
@@ -146,16 +149,24 @@ class App extends Component {
 		})
 	}
 
+	handlePlayerWins(id) {
+		this.setState({
+			gameState: GAME_STATES.waitingForRound,
+			round: this.state.round + 1
+		})
+//		this.playing.startRound();
+	}
+
 	componentWillReceiveProps(nextProps) {
 		if(this.state.gameState === GAME_STATES.waitingForGame){
 			if(nextProps.players.length >= NUM_PLAYERS_REQUIRED && nextProps.players.every(p => p.ready)){
 				this.setState({
 					gameState: GAME_STATES.waitingForRound
-				})
+				});
 			}
 		}
 	}
-}
+ }
 const mapStateToProps = state => {
 	return {
 		players: state.players,
